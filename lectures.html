@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reorganize Vimeo Lectures</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .lecture-item {
+            padding: 10px;
+            margin: 10px;
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            cursor: move;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .lecture-description {
+            width: 50%;
+        }
+        .lecture-number {
+            width: 50px;
+        }
+        ul {
+            list-style-type: none;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        button {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Reorganize Vimeo Lectures</h1>
+<ul id="lecture-list">
+    <!-- Lecture items will be dynamically added here -->
+</ul>
+
+<script>
+// Full list of lectures with numbers and descriptions
+let lectures = [
+   {number: '88a', description: 'Lecture 88a description', link: 'https://vimeo.com/user98867147/review/1008842327/e59dc5ab92'},
+{number: '88b', description: 'Lecture 88b description', link: 'https://vimeo.com/user98867147/review/1008842525/3d3b3fe28f'},
+{number: '87a', description: 'Lecture 87a description', link: 'https://vimeo.com/user98867147/review/1007614483/e3e4750eb4'},
+{number: '87b', description: 'Lecture 87b description', link: 'https://vimeo.com/user98867147/review/1007614594/f6fecc02af'},
+{number: '86a', description: 'Lecture 86a description', link: 'https://vimeo.com/user98867147/review/1006573068/0e5d7ef580'},
+{number: '86b', description: 'Lecture 86b description', link: 'https://vimeo.com/user98867147/review/1006573191/bd07771abb'},
+{number: '85a', description: 'Lecture 85a description', link: 'https://vimeo.com/user98867147/review/1005475314/c5607e517d'},
+{number: '85b', description: 'Lecture 85b description', link: 'https://vimeo.com/user98867147/review/1005475478/ef365fcef2'},
+{number: '84a', description: 'Lecture 84a description', link: 'https://vimeo.com/user98867147/review/1002690787/9483fa5046'},
+{number: '84b', description: 'Lecture 84b description', link: 'https://vimeo.com/user98867147/review/1002691003/e507065cf3'},
+{number: '83a', description: 'Lecture 83a description', link: 'https://vimeo.com/user98867147/review/1001535732/b13cccde0e'},
+{number: '83b', description: 'Lecture 83b description', link: 'https://vimeo.com/user98867147/review/1001535831/5d57d929ba'},
+{number: '82a', description: 'Lecture 82a description', link: 'https://vimeo.com/user98867147/review/1000397876/46b8964913'},
+{number: '82b', description: 'Lecture 82b description', link: 'https://vimeo.com/user98867147/review/1000398116/f58c5bcb1d'},
+{number: '81a', description: 'Lecture 81a description', link: 'https://vimeo.com/user98867147/review/999067806/6dd25b38f8'},
+{number: '81b', description: 'Lecture 81b description', link: 'https://vimeo.com/user98867147/review/999067959/e4ce1f707a'},
+{number: '80a', description: 'Lecture 80a description', link: 'https://vimeo.com/user98867147/review/997720965/71cb6bbca4'},
+{number: '80b', description: 'Lecture 80b description', link: 'https://vimeo.com/user98867147/review/997720791/2e5d138d0f'},
+{number: '79a', description: 'Lecture 79a description', link: 'https://vimeo.com/user98867147/review/996127637/c7108788bf'},
+{number: '79b', description: 'Lecture 79b description', link: 'https://vimeo.com/user98867147/review/996128786/b2633555c7'},
+{number: '78a', description: 'Lecture 78a description', link: 'https://vimeo.com/user98867147/review/994991966/d2d3dc8ce4'},
+{number: '78b', description: 'Lecture 78b description', link: 'https://vimeo.com/user98867147/review/994992537/65afd03afc'},
+{number: '77a', description: 'Lecture 77a description', link: 'https://vimeo.com/user98867147/review/991532952/0bfe24706d'},
+{number: '77b', description: 'Lecture 77b description', link: 'https://vimeo.com/user98867147/review/991532547/cea914ba5a'},
+{number: '76a', description: 'Lecture 76a description', link: 'https://vimeo.com/user98867147/review/986372143/efa70d099d'},
+{number: '76b', description: 'Lecture 76b description', link: 'https://vimeo.com/user98867147/review/986374502/1aa7e3f269'},
+{number: '75a', description: 'Lecture 75a description', link: 'https://vimeo.com/user98867147/review/984252475/2294d18ed3'},
+{number: '75b', description: 'Lecture 75b description', link: 'https://vimeo.com/user98867147/review/984252759/7e129d9ce8'},
+{number: '74a', description: 'Lecture 74a description', link: 'https://vimeo.com/user98867147/review/982500924/c66c87fe5f'},
+{number: '74b', description: 'Lecture 74b description', link: 'https://vimeo.com/user98867147/review/982501077/aae94ef9f3'},
+{number: '73a', description: 'Lecture 73a description', link: 'https://vimeo.com/user98867147/review/980498043/23723c0726'},
+{number: '73b', description: 'Lecture 73b description', link: 'https://vimeo.com/user98867147/review/980498460/5ab3c9e0fd'},
+{number: '72a', description: 'Lecture 72a description', link: 'https://vimeo.com/user98867147/review/976407726/3d6edce600'},
+{number: '72b', description: 'Lecture 72b description', link: 'https://vimeo.com/user98867147/review/976408171/fb48dbd0db'},
+{number: '71a', description: 'Lecture 71a description', link: 'https://vimeo.com/user98867147/review/974926313/e06dd0649a'},
+{number: '71b', description: 'Lecture 71b description', link: 'https://vimeo.com/user98867147/review/974926617/be08b47e64'},
+{number: '70a', description: 'Lecture 70a description', link: 'https://vimeo.com/user98867147/review/969668440/1b9e3068e6'},
+{number: '70b', description: 'Lecture 70b description', link: 'https://vimeo.com/user98867147/review/969668757/1c07e75603'},
+{number: '69a', description: 'Lecture 69a description', link: 'https://vimeo.com/user98867147/review/966488608/7700617cc2'},
+{number: '69b', description: 'Lecture 69b description', link: 'https://vimeo.com/user98867147/review/960302440/7fadf8f77f'},
+{number: '68a', description: 'Lecture 68a description', link: 'https://vimeo.com/user98867147/review/963122230/4544d38646'},
+{number: '68b', description: 'Lecture 68b description', link: 'https://vimeo.com/user98867147/review/963121948/5b41848c2b'},
+{number: '67a', description: 'Lecture 67a description', link: 'https://vimeo.com/user98867147/review/960302853/3f49540017'},
+{number: '67b', description: 'Lecture 67b description', link: 'https://vimeo.com/user98867147/review/955955271/c83bc4abed'},
+{number: '66a', description: 'Lecture 66a description', link: 'https://vimeo.com/user98867147/review/955954894/70b21dff69'},
+{number: '66b', description: 'Lecture 66b description', link: 'https://vimeo.com/user98867147/review/955942537/c1ad56eb55'},
+{number: '65a', description: 'Lecture 65a description', link: 'https://vimeo.com/user98867147/review/955941928/cb4aa0807c'},
+{number: '65b', description: 'Lecture 65b description', link: 'https://vimeo.com/user98867147/review/953074576/8f6e4cbc91'},
+{number: '64a', description: 'Lecture 64a description', link: 'https://vimeo.com/user98867147/review/953074137/fb189d4d56'},
+{number: '64b', description: 'Lecture 64b description', link: 'https://vimeo.com/user98867147/review/951883311/4028a0422d'},
+{number: '63a', description: 'Lecture 63a description', link: 'https://vimeo.com/user98867147/review/951883117/e5d345d402'},
+{number: '63b', description: 'Lecture 63b description', link: 'https://vimeo.com/user98867147/review/949504114/5bb7de1c99'},
+{number: '62a', description: 'Lecture 62a description', link: 'https://vimeo.com/user98867147/review/949503999/6bd8520b9c'},
+{number: '62b', description: 'Lecture 62b description', link: 'https://vimeo.com/user98867147/review/948656058/ac42d8a817'},
+{number: '61a', description: 'Lecture 61a description', link: 'https://vimeo.com/user98867147/review/948648441/c23094a5b8'},
+{number: '61b', description: 'Lecture 61b description', link: 'https://vimeo.com/user98867147/review/946956152/a0eff52b9d'},
+{number: '60a', description: 'Lecture 60a description', link: 'https://vimeo.com/user98867147/review/944442603/137e3ffa34'},
+{number: '60b', description: 'Lecture 60b description', link: 'https://vimeo.com/user98867147/review/944442395/3ac6a22f82'},
+{number: '59a', description: 'Lecture 59a description', link: 'https://vimeo.com/user98867147/review/937599728/ac2ed80417'},
+{number: '59b', description: 'Lecture 59b description', link: 'https://vimeo.com/user98867147/review/937599615/469aebd74f'},
+{number: '58a', description: 'Lecture 58a description', link: 'https://vimeo.com/user98867147/review/936232643/900ab27710'},
+{number: '58b', description: 'Lecture 58b description', link: 'https://vimeo.com/user98867147/review/936232070/10890fd8b5'},
+{number: '57a', description: 'Lecture 57a description', link: 'https://vimeo.com/user98867147/review/934961592/586fc23a33'},
+{number: '57b', description: 'Lecture 57b description', link: 'https://vimeo.com/user98867147/review/933297785/3e9144b16a'},
+{number: '56a', description: 'Lecture 56a description', link: 'https://vimeo.com/user98867147/review/933297049/a5d6f6984a'},
+{number: '56b', description: 'Lecture 56b description', link: 'https://vimeo.com/user98867147/review/931994810/79c6e77a51'},
+{number: '55a', description: 'Lecture 55a description', link: 'https://vimeo.com/user98867147/review/931994730/7783abafa4'},
+{number: '55b', description: 'Lecture 55b description', link: 'https://vimeo.com/user98867147/review/931994529/a84f3f05dd'},
+{number: '54a', description: 'Lecture 54a description', link: 'https://vimeo.com/user98867147/review/930695500/d7d46c54fa'},
+{number: '54b', description: 'Lecture 54b description', link: 'https://vimeo.com/user98867147/review/930695400/de48f86bfb'},
+{number: '53a', description: 'Lecture 53a description', link: 'https://vimeo.com/user98867147/review/929552486/f9a39f0dbe'},
+{number: '53b', description: 'Lecture 53b description', link: 'https://vimeo.com/user98867147/review/929552307/75d36ab5e2'},
+{number: '52a', description: 'Lecture 52a description', link: 'https://vimeo.com/user98867147/review/928382172/dda81ea461'},
+{number: '52b', description: 'Lecture 52b description', link: 'https://vimeo.com/user98867147/review/928382024/9e3a5afd11'},
+{number: '51a', description: 'Lecture 51a description', link: 'https://vimeo.com/user98867147/review/925850297/799be6e772'},
+{number: '51b', description: 'Lecture 51b description', link: 'https://vimeo.com/user98867147/review/925850117/9628d0c441'},
+{number: '50a', description: 'Lecture 50a description', link: 'https://vimeo.com/user98867147/review/924637061/435cc6cea3'},
+{number: '50b', description: 'Lecture 50b description', link: 'https://vimeo.com/user98867147/review/924636862/cae8858285'},
+{number: '49a', description: 'Lecture 49a description', link: 'https://vimeo.com/user98867147/review/923362187/2dc14b0933'},
+{number: '49b', description: 'Lecture 49b description', link: 'https://vimeo.com/user98867147/review/923307833/1bc2d94a21'},
+{number: '48a', description: 'Lecture 48a description', link: 'https://vimeo.com/user98867147/review/923307687/dd5d98ce34'},
+{number: '48b', description: 'Lecture 48b description', link: 'https://vimeo.com/user98867147/review/921986273/ba84999667'},
+{number: '47a', description: 'Lecture 47a description', link: 'https://vimeo.com/user98867147/review/920524790/143a5f3679'},
+{number: '47b', description: 'Lecture 47b description', link: 'https://vimeo.com/user98867147/review/920524646/2485abfb4d'},
+{number: '46a', description: 'Lecture 46a description', link: 'https://vimeo.com/user98867147/review/919163949/b06b83046c'},
+{number: '46b', description: 'Lecture 46b description', link: 'https://vimeo.com/user98867147/review/919163790/ba1e76c1db'},
+{number: '45a', description: 'Lecture 45a description', link: 'https://vimeo.com/user98867147/review/917887209/fcea64495b'},
+{number: '45b', description: 'Lecture 45b description', link: 'https://vimeo.com/user98867147/review/917887053/8c1c89585f'},
+{number: '44a', description: 'Lecture 44a description', link: 'https://vimeo.com/user98867147/review/916744465/7ca34d23d8'},
+{number: '44b', description: 'Lecture 44b description', link: 'https://vimeo.com/user98867147/review/916744311/b0c3be8519'},
+{number: '43a', description: 'Lecture 43a description', link: 'https://vimeo.com/user98867147/review/913329780/5ef5103e12'},
+{number: '43b', description: 'Lecture 43b description', link: 'https://vimeo.com/user98867147/review/915627134/db75351e08'},
+{number: '42a', description: 'Lecture 42a description', link: 'https://vimeo.com/user98867147/review/915626902/a933e6851b'},
+{number: '42b', description: 'Lecture 42b description', link: 'https://vimeo.com/user98867147/review/914422151/ad7503a43c'},
+{number: '41a', description: 'Lecture 41a description', link: 'https://vimeo.com/user98867147/review/913736487/57aeded617'},
+{number: '41b', description: 'Lecture 41b description', link: 'https://vimeo.com/user98867147/review/913329595/cd95c6a66f'},
+{number: '40a', description: 'Lecture 40a description', link: 'https://vimeo.com/user98867147/review/912262174/13ac3231cc'},
+{number: '40b', description: 'Lecture 40b description', link: 'https://vimeo.com/user98867147/review/912261829/cf098eb090'},
+{number: '39a', description: 'Lecture 39a description', link: 'https://vimeo.com/user98867147/review/911215934/efe0a250f3'},
+{number: '39b', description: 'Lecture 39b description', link: 'https://vimeo.com/user98867147/review/911215064/5a838293a6'},
+{number: '38a', description: 'Lecture 38a description', link: 'https://vimeo.com/user98867147/review/910107502/d5797d6db0'},
+{number: '38b', description: 'Lecture 38b description', link: 'https://vimeo.com/user98867147/review/910107313/0e863719f5'},
+{number: '37a', description: 'Lecture 37a description', link: 'https://vimeo.com/user98867147/review/908723317/356ad38190'},
+{number: '37b', description: 'Lecture 37b description', link: 'https://vimeo.com/user98867147/review/908723048/51b6410a02'},
+{number: '36a', description: 'Lecture 36a description', link: 'https://vimeo.com/user98867147/review/907489941/3cc7b8ae82'},
+{number: '36b', description: 'Lecture 36b description', link: 'https://vimeo.com/user98867147/review/907489785/e48a71de82'},
+{number: '35a', description: 'Lecture 35a description', link: 'https://vimeo.com/user98867147/review/906310201/fee502a1c7'},
+{number: '35b', description: 'Lecture 35b description', link: 'https://vimeo.com/user98867147/review/906310077/3fdb9e4acf'},
+{number: '34a', description: 'Lecture 34a description', link: 'https://vimeo.com/user98867147/review/905182928/fe3a6c217b'},
+{number: '34b', description: 'Lecture 34b description', link: 'https://vimeo.com/user98867147/review/905182615/d8b17c6a94'},
+{number: '33a', description: 'Lecture 33a description', link: 'https://vimeo.com/user98867147/review/904089024/4c0515b926'},
+{number: '33b', description: 'Lecture 33b description', link: 'https://vimeo.com/user98867147/review/904088875/88777823f7'},
+{number: '32a', description: 'Lecture 32a description', link: 'https://vimeo.com/user98867147/review/902895848/5b9d66c514'},
+{number: '32b', description: 'Lecture 32b description', link: 'https://vimeo.com/user98867147/review/902895742/4b4bea7a1d'},
+{number: '31a', description: 'Lecture 31a description', link: 'https://vimeo.com/user98867147/review/857467070/c143a37251'},
+{number: '31b', description: 'Lecture 31b description', link: 'https://vimeo.com/user98867147/review/857467034/26f77a2e98'},
+{number: '30a', description: 'Lecture 30a description', link: 'https://vimeo.com/user98867147/review/900992244/14fcdf1e1b'},
+{number: '30b', description: 'Lecture 30b description', link: 'https://vimeo.com/user98867147/review/900972589/b21730a7a7'},
+{number: '29a', description: 'Lecture 29a description', link: 'https://vimeo.com/user98867147/review/899791231/58a27a96eb'},
+{number: '29b', description: 'Lecture 29b description', link: 'https://vimeo.com/user98867147/review/899791098/c533ce0798'},
+<!--{number: '28a', description: 'Lecture 28a description', link: 'https://vimeo.com/user98867147/review/899033148/c826892f0c'},-->
+<!--{number: '28b', description: 'Lecture 28b description', link: 'https://vimeo.com/user98867147/review/899033103/f3f0229905'},-->
+<!--{number: '27a', description: 'Lecture 27a description', link: 'https://vimeo.com/user98867147/review/898309574/aebe4e041f'},-->
+<!--{number: '27b', description: 'Lecture 27b description', link: 'https://vimeo.com/user98867147/review/898309524/56ab827cb0'},-->
+<!--{number: '26a', description: 'Lecture 26a description', link: 'https://vimeo.com/user98867147/review/897751002/4e1aea1b1f'},-->
+<!--{number: '26b', description: 'Lecture 26b description', link: 'https://vimeo.com/user98867147/review/897750954/2b7495c589'},-->
+<!--{number: '25a', description: 'Lecture 25a description', link: 'https://vimeo.com/user98867147/review/897750917/3f1399b1b0'},-->
+<!--{number: '25b', description: 'Lecture 25b description', link: 'https://vimeo.com/user98867147/review/896887643/a5ad230b9d'},-->
+<!--{number: '24a', description: 'Lecture 24a description', link: 'https://vimeo.com/user98867147/review/895912683/3918b8bfb5'},-->
+<!--{number: '24b', description: 'Lecture 24b description', link: 'https://vimeo.com/user98867147/review/895912395/b3418f2ab8'},-->
+<!--{number: '23a', description: 'Lecture 23a description', link: 'https://vimeo.com/user98867147/review/894104853/74e74382f7'},-->
+<!--{number: '23b', description: 'Lecture 23b description', link: 'https://vimeo.com/user98867147/review/891023985/1801768913'},-->
+<!--{number: '22a', description: 'Lecture 22a description', link: 'https://vimeo.com/user98867147/review/891023855/8e0f78189f'},-->
+<!--{number: '22b', description: 'Lecture 22b description', link: 'https://vimeo.com/user98867147/review/889877968/73688f8e9f'},-->
+<!--{number: '21a', description: 'Lecture 21a description', link: 'https://vimeo.com/user98867147/review/889877847/aa6357c098'},-->
+<!--{number: '21b', description: 'Lecture 21b description', link: 'https://vimeo.com/user98867147/review/888632529/3059bd5aa5'},-->
+<!--{number: '20a', description: 'Lecture 20a description', link: 'https://vimeo.com/user98867147/review/888632401/84c249f7cb'},-->
+<!--{number: '20b', description: 'Lecture 20b description', link: 'https://vimeo.com/user98867147/review/887615567/4ee87e8399'},-->
+<!--{number: '19a', description: 'Lecture 19a description', link: 'https://vimeo.com/user98867147/review/887615391/1f91d53b79'},-->
+<!--{number: '19b', description: 'Lecture 19b description', link: 'https://vimeo.com/user98867147/review/886437517/a6ecaf4786'},-->
+<!--{number: '18a', description: 'Lecture 18a description', link: 'https://vimeo.com/user98867147/review/886437413/73666dc0ed'},-->
+<!--{number: '18b', description: 'Lecture 18b description', link: 'https://vimeo.com/user98867147/review/885282681/06a18d9194'},-->
+<!--{number: '17a', description: 'Lecture 17a description', link: 'https://vimeo.com/user98867147/review/885281647/ce0fda4512'},-->
+<!--{number: '17b', description: 'Lecture 17b description', link: 'https://vimeo.com/user98867147/review/883994248/c6a45fa535'},-->
+<!--{number: '16a', description: 'Lecture 16a description', link: 'https://vimeo.com/user98867147/review/883991945/1baccbb8ac'},-->
+<!--{number: '16b', description: 'Lecture 16b description', link: 'https://vimeo.com/user98867147/review/883679815/7e82332841'},-->
+<!--{number: '15a', description: 'Lecture 15a description', link: 'https://vimeo.com/user98867147/review/883679628/ca38ad3ccc'},-->
+<!--{number: '15b', description: 'Lecture 15b description', link: 'https://vimeo.com/user98867147/review/881698629/9fad4b76c9'},-->
+<!--{number: '14a', description: 'Lecture 14a description', link: 'https://vimeo.com/user98867147/review/881698385/a1a76d7417'},-->
+<!--{number: '14b', description: 'Lecture 14b description', link: 'https://vimeo.com/user98867147/review/880576145/d2b2503149'}-->
+];
+
+// Load saved data from localStorage if available
+if (localStorage.getItem('lectureData')) {
+    lectures = JSON.parse(localStorage.getItem('lectureData'));
+}
+
+// Function to save lectures data to localStorage
+function saveLectures() {
+    localStorage.setItem('lectureData', JSON.stringify(lectures));
+}
+
+// Function to render the list of lectures
+function renderLectures() {
+    const lectureList = document.getElementById('lecture-list');
+    lectureList.innerHTML = ''; // Clear the list
+    lectures.forEach((lecture, index) => {
+        const li = document.createElement('li');
+        li.classList.add('lecture-item');
+        li.setAttribute('draggable', 'true');
+        li.dataset.index = index;
+        li.innerHTML = `
+            <input type="text" class="lecture-number" value="${lecture.number}" oninput="updateLectureNumber(${index}, this.value)" />
+            <input type="text" class="lecture-description" value="${lecture.description}" oninput="updateLectureDescription(${index}, this.value)" />
+            <a href="${lecture.link}" target="_blank">Link</a>
+            <button onclick="deleteLecture(${index})">Delete</button>
+        `;
+        lectureList.appendChild(li);
+
+        // Add drag event listeners
+        li.addEventListener('dragstart', handleDragStart);
+        li.addEventListener('dragover', handleDragOver);
+        li.addEventListener('drop', handleDrop);
+        li.addEventListener('dragend', handleDragEnd);
+    });
+}
+
+// Update lecture number
+function updateLectureNumber(index, newValue) {
+    lectures[index].number = newValue;
+    saveLectures();
+}
+
+// Update lecture description
+function updateLectureDescription(index, newValue) {
+    lectures[index].description = newValue;
+    saveLectures();
+}
+
+// Delete a lecture
+function deleteLecture(index) {
+    lectures.splice(index, 1);
+    renderLectures();
+    saveLectures();
+}
+
+// Drag and drop functions
+let dragSrcEl = null;
+
+function handleDragStart(e) {
+    dragSrcEl = this;
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', this.innerHTML);
+    this.classList.add('dragging');
+}
+
+function handleDragOver(e) {
+    if (e.preventDefault) {
+        e.preventDefault(); // Necessary for drop to work
+    }
+    e.dataTransfer.dropEffect = 'move';
+    return false;
+}
+
+function handleDrop(e) {
+    if (e.stopPropagation) {
+        e.stopPropagation(); // Stops some browsers from redirecting.
+    }
+    if (dragSrcEl !== this) {
+        const srcIndex = dragSrcEl.dataset.index;
+        const targetIndex = this.dataset.index;
+
+        // Swap the dragged and target lectures
+        const temp = lectures[srcIndex];
+        lectures[srcIndex] = lectures[targetIndex];
+        lectures[targetIndex] = temp;
+
+        renderLectures();
+        saveLectures();
+    }
+    return false;
+}
+
+function handleDragEnd() {
+    const items = document.querySelectorAll('.lecture-item');
+    items.forEach(item => {
+        item.classList.remove('dragging');
+    });
+}
+
+// Initial rendering of lectures
+renderLectures();
+
+</script>
+
+</body>
+</html>
